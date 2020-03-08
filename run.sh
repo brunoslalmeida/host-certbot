@@ -36,9 +36,3 @@ do
       --webroot-path=/data/letsencrypt \
       $domain
 done < $CERTBOT_DOMAINS
-
-if test -z "$domains" 
-then
-  echo "Nenhum domínio novo encontrado"
-  exit 0
-fi
