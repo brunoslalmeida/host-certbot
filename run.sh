@@ -34,5 +34,6 @@ do
       certonly --webroot \
       --email $CERTBOT_MAIL --agree-tos --no-eff-email \
       --webroot-path=/data/letsencrypt \
+      --force-renewal \
       $domain
 done < $CERTBOT_DOMAINS
