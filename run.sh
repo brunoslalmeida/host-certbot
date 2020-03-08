@@ -35,7 +35,6 @@ do
       --email $CERTBOT_MAIL --agree-tos --no-eff-email \
       --webroot-path=/data/letsencrypt \
       $domain
-  fi
 done < $CERTBOT_DOMAINS
 
 if test -z "$domains" 
