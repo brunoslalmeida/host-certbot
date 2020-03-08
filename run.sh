@@ -23,14 +23,8 @@ if test -z "$CERTBOT_DOMAINS"; then
 fi
 
 #Validating all domains
-while IFS="" read -r line
-do
-  #Check if this domain already has certified
-  if [ -d "$cwd/etc/letsencrypt/live/$line" ]; then
-    echo "!# O domínio $line JÁ possui certificado"
-  else
-    echo "## O domínio $line NÃO possui certificado... criando..."
-  
+while IFS="" read -r domain
+do  
     docker run -it --rm \
       -v $NGINX_VAR_WWW:/data/letsencrypt \
       -v $cwd/etc/letsencrypt:/etc/letsencrypt \
@@ -40,7 +34,7 @@ do
       certonly --webroot \
       --email $CERTBOT_MAIL --agree-tos --no-eff-email \
       --webroot-path=/data/letsencrypt \
-      -d $line -d *.$line
+      $domain
   fi
 done < $CERTBOT_DOMAINS
 
