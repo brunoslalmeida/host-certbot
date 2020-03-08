@@ -29,8 +29,20 @@ do
   if [ -d "$cwd/etc/letsencrypt/live/$line" ]; then
     echo "!# O domínio $line JÁ possui certificado"
   else
-    echo "## O domínio $line NÃO possui certificado e será criado"
-    domains=$domains" -d "$line
+    echo "## O domínio $line NÃO possui certificado... criando..."
+    
+    domains="-d" $line" -d *."$line
+
+    docker run -it --rm \
+      -v $NGINX_VAR_WWW:/data/letsencrypt \
+      -v $cwd/etc/letsencrypt:/etc/letsencrypt \
+      -v $cwd/var/lib/letsencrypt:/var/lib/letsencrypt \
+      -v $cwd/var/log/letsencrypt:/var/log/letsencrypt \
+      certbot/certbot \
+      certonly --webroot \
+      --email $CERTBOT_MAIL --agree-tos --no-eff-email \
+      --webroot-path=/data/letsencrypt \
+      $domains
   fi
 done < $CERTBOT_DOMAINS
 
@@ -39,14 +51,3 @@ then
   echo "Nenhum domínio novo encontrado"
   exit 0
 fi
-
-docker run -it --rm \
-    -v $NGINX_VAR_WWW:/data/letsencrypt \
-    -v $cwd/etc/letsencrypt:/etc/letsencrypt \
-    -v $cwd/var/lib/letsencrypt:/var/lib/letsencrypt \
-    -v $cwd/var/log/letsencrypt:/var/log/letsencrypt \
-    certbot/certbot \
-    certonly --webroot \
-    --email $CERTBOT_MAIL --agree-tos --no-eff-email \
-    --webroot-path=/data/letsencrypt \
-    $domains
