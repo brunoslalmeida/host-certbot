@@ -30,9 +30,7 @@ do
     echo "!# O domínio $line JÁ possui certificado"
   else
     echo "## O domínio $line NÃO possui certificado... criando..."
-    
-    domains="-d $line -d *.$line"
-
+  
     docker run -it --rm \
       -v $NGINX_VAR_WWW:/data/letsencrypt \
       -v $cwd/etc/letsencrypt:/etc/letsencrypt \
@@ -42,7 +40,7 @@ do
       certonly --webroot \
       --email $CERTBOT_MAIL --agree-tos --no-eff-email \
       --webroot-path=/data/letsencrypt \
-      $domains
+      -d $line -d *.$line
   fi
 done < $CERTBOT_DOMAINS
 
