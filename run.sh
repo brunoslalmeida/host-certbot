@@ -31,7 +31,7 @@ do
   else
     echo "## O domínio $line NÃO possui certificado... criando..."
     
-    domains="-d" $line" -d *."$line
+    domains="-d $line -d *.$line"
 
     docker run -it --rm \
       -v $NGINX_VAR_WWW:/data/letsencrypt \
