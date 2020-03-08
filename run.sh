@@ -25,7 +25,7 @@ fi
 #Validating all domains
 while IFS="" read -r domain
 do  
-    docker run -it --rm \
+    docker run --rm \
       -v $NGINX_VAR_WWW:/data/letsencrypt \
       -v $cwd/etc/letsencrypt:/etc/letsencrypt \
       -v $cwd/var/lib/letsencrypt:/var/lib/letsencrypt \
