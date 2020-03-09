@@ -10,5 +10,6 @@ docker run --rm \
   certbot/certbot renew \
   --webroot \
   -w /data/letsencrypt \
-  --quiet && \
-  docker kill --signal=HUP nginx
+  --quiet
+
+docker restart nginx
